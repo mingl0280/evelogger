@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="WebLogger.EVE.Ver1.exe" version="1.0.0.0" publicKeyToken="3e6b8c41fefc8fd1" language="neutral" processorArchitecture="x86" type="win32" />
+  <description asmv2:iconFile="eve 001.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="WebLogger.EVE.Ver1" version="1.1.0.0" language="neutral" processorArchitecture="x86" />
+    <commandLine file="WebLogger.EVE.Ver1.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC 清单选项
+          如果要更改 Windows 用户帐户控制级别，请用以下节点之一替换
+          requestedExecutionLevel 节点。
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+          如果要利用文件和注册表虚拟化提供
+          向后兼容性，请删除 requestedExecutionLevel 节点。
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WebLogger.EVE.Ver1.exe" size="1047040">
+      <assemblyIdentity name="WebLogger.EVE.Ver1" version="1.1.0.0" language="neutral" processorArchitecture="x86" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>wBDwkKrproCiB6GneVtXYrgnabo=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="eve 001.ico" size="434191">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>/RTyhdK+sfJv+rWCzLS2HMBICdE=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=MING-LAPTOP\Administrator" issuerKeyHash="dd65e53a61cc6a29904b8e0edba56fd55a2a2991" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>vxF7/zYnxAFQsgWIzDScJwLXHUI=</DigestValue></Reference></SignedInfo><SignatureValue>qpBuS2RAKRCAnPhP7J4kOE9L6VxyDd/N8eBwSMHmSATNNFMHzq1y7KTriJMCjMn8+Bkf7p1SXotYgKEn9c+JLExouAgy0UxNIKQCkAyJAuQyYXxI5ln29VynapWE/dJoNaTQoCQgqueB3pCamYDY3G5dUkdq2c7SiQggrnd4byo=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>xIHVuo5a98+h3wL22fflV2IrzQ23Cpg30u/fFD0wmd3DH9/M/vW2BXIop4dTeJ3OAAIJxC5ZxtwWubT3NAqhUsAtY7WqHDhst9W7e0piDkoYM3zd30q1HwmcQkT7Q8yUNiKXzVIsNwzNj57eWiofyGIr5WPyXHjVjhrOQmjfpBM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="421dd702279c34cc8805b25001c42736ff7b11bf" Description="" Url=""><as:assemblyIdentity name="WebLogger.EVE.Ver1.exe" version="1.0.0.0" publicKeyToken="3e6b8c41fefc8fd1" language="neutral" processorArchitecture="x86" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=MING-LAPTOP\Administrator</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>+Qg+51hsoSCm+23h9c4i2imZUPw=</DigestValue></Reference></SignedInfo><SignatureValue>CMcTggdtuecbDj48JTpESBWD48mf1ReHG015wAJGT0msfSTcbSqcDHHpUwYYuTyAV/pGjyUc/t/Y3ADIwK5RtI0iyphshXqvROBd+waFEEvGHH/wBOU4DgH/GDc2lBOpHDOAXHDWQmmisNmsxx3KduViukMJ5p2pGsXVFWtItXw=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>xIHVuo5a98+h3wL22fflV2IrzQ23Cpg30u/fFD0wmd3DH9/M/vW2BXIop4dTeJ3OAAIJxC5ZxtwWubT3NAqhUsAtY7WqHDhst9W7e0piDkoYM3zd30q1HwmcQkT7Q8yUNiKXzVIsNwzNj57eWiofyGIr5WPyXHjVjhrOQmjfpBM=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB/TCCAWagAwIBAgIQRfNgWkt5TrpEy30KPmhzGTANBgkqhkiG9w0BAQUFADA9MTswOQYDVQQDHjIATQBJAE4ARwAtAEwAQQBQAFQATwBQAFwAQQBkAG0AaQBuAGkAcwB0AHIAYQB0AG8AcjAeFw0xMzAxMjYxNzQyMDNaFw0xNDAxMjYyMzQyMDNaMD0xOzA5BgNVBAMeMgBNAEkATgBHAC0ATABBAFAAVABPAFAAXABBAGQAbQBpAG4AaQBzAHQAcgBhAHQAbwByMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEgdW6jlr3z6HfAvbZ9+VXYivNDbcKmDfS798UPTCZ3cMf38z+9bYFciinh1N4nc4AAgnELlnG3Ba5tPc0CqFSwC1jtaocOGy31bt7SmIOShgzfN3fSrUfCZxCRPtDzJQ2IpfNUiw3DM2Pnt5aKh/IYivlY/JceNWOGs5CaN+kEwIDAQABMA0GCSqGSIb3DQEBBQUAA4GBAFmvNQpy7pgGHlfU/jk+rL3yqToYhVjnayJwaFjBKmm9W6LvYKlxukiHZAlKKqtQPbijsX9YJd2gwKEsTU92IiNScy+qG0vQHhpxny+1rZrZKNxWRYpbyjTxve1G6zP3MyGejwlFw7SR2Cz+rMR9mdCB3YH5MHKgRVXenIrak2cF</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
