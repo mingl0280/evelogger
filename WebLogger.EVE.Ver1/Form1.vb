@@ -122,7 +122,9 @@ Public Class Form1
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
-        TextBox1.Text = decode(aAccounts(ComboBox1.SelectedIndex + 1).password_encrypted)
+        If ComboBox1.Text <> "" And ComboBox1.SelectedIndex >= 0 Then
+            TextBox1.Text = decode(aAccounts(ComboBox1.SelectedIndex + 1).password_encrypted)
+        End If
     End Sub
 
     ''' <summary>
@@ -195,13 +197,13 @@ Public Class Form1
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub menuItem_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuStrip1.Click
+    Private Sub menuItem_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuStrip1.Click, ContextMenuStrip1.Click
         Dim item As String = sender.name
         For i As Integer = 1 To UBound(aAccounts)
             If aAccounts(i).user = item Then
                 TextBox1.Text = decode(aAccounts(i).password_encrypted)
                 ComboBox1.Text = aAccounts(i).user
-                Button1.PerformClick()
+                Button1_Click(Nothing, Nothing)
             End If
         Next
     End Sub
@@ -474,11 +476,14 @@ Public Class Form1
     Public Sub flushMenuItems()
         Dim f As ToolStripMenuItem = MenuStrip1.Items(0)
         Dim doitem As ToolStripMenuItem = f.DropDownItems(0)
+        Dim CMStripitem As ToolStripMenuItem = ContextMenuStrip1.Items(1)
+        'Dim doitem2 As ToolStripMenuItem = CMStripitem.DropDownItems(0)
         doitem.DropDownItems.Clear()
         ComboBox1.Items.Clear()
         For i As Integer = 1 To UBound(aAccounts)
             doitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
             ComboBox1.Items.Add(aAccounts(i).user)
+            CMStripitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
         Next
     End Sub
 

@@ -55,6 +55,7 @@ Partial Class Form1
         Me.Label5 = New System.Windows.Forms.Label()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
         Me.OvalShape1 = New Microsoft.VisualBasic.PowerPacks.OvalShape()
+        Me.快速登录ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -159,9 +160,9 @@ Partial Class Form1
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.退出ToolStripMenuItem1, Me.显示登陆器ToolStripMenuItem})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.显示登陆器ToolStripMenuItem, Me.快速登录ToolStripMenuItem, Me.退出ToolStripMenuItem1})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(137, 48)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(137, 70)
         '
         '退出ToolStripMenuItem1
         '
@@ -273,6 +274,12 @@ Partial Class Form1
         Me.OvalShape1.Name = "OvalShape1"
         Me.OvalShape1.Size = New System.Drawing.Size(10, 10)
         '
+        '快速登录ToolStripMenuItem
+        '
+        Me.快速登录ToolStripMenuItem.Name = "快速登录ToolStripMenuItem"
+        Me.快速登录ToolStripMenuItem.Size = New System.Drawing.Size(136, 22)
+        Me.快速登录ToolStripMenuItem.Text = "快速登录"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -333,5 +340,6 @@ Partial Class Form1
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
     Friend WithEvents OvalShape1 As Microsoft.VisualBasic.PowerPacks.OvalShape
+    Friend WithEvents 快速登录ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

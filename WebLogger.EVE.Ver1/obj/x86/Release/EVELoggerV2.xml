@@ -128,7 +128,7 @@ EVELoggerV2
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
-</member><member name="M:EVELoggerV2.Module1.GetPrivateProfileString(System.String,System.String,System.String,System.String,System.Int32,System.String)">
+</member><member name="M:EVELoggerV2.Module1.NativeMethods.GetPrivateProfileString(System.String,System.String,System.String,System.String,System.Int32,System.String)">
 	<summary>
  WindowsAPI，用于获取ini文件中的值
  </summary>
@@ -140,7 +140,7 @@ EVELoggerV2
 	<param name="lpFileName">要读取的ini文件名</param>
 	<returns>一个整数值，用于表明是否成功读取了该ini文件的值</returns>
 	<remarks></remarks>
-</member><member name="M:EVELoggerV2.Module1.WritePrivateProfileString(System.String,System.String,System.String,System.String)">
+</member><member name="M:EVELoggerV2.Module1.NativeMethods.WritePrivateProfileString(System.String,System.String,System.String,System.String)">
 	<summary>
  WindowsAPI,用于写入ini文件键值
  </summary>
