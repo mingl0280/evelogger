@@ -91,6 +91,31 @@ EVELoggerV2
  </summary>
 	<param name="s">程序是否已经退出</param>
 	<remarks></remarks>
+</member><member name="M:EVELoggerV2.Form1.StartLogin">
+	<summary>
+ 启动登录过程
+ </summary>
+	<remarks></remarks>
+</member><member name="M:EVELoggerV2.Form1.DisableOrEnableObject(System.Object[]@,System.Boolean)">
+	<summary>
+ 批量处理控件的启用和禁用
+ </summary>
+	<param name="o">控件列表</param>
+	<param name="i">参数</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:EVELoggerV2.Form1.StartEVE(System.String)">
+	<summary>
+ 启动EVE
+ </summary>
+	<param name="ss">超时参数</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:EVELoggerV2.Form1.flushMenuItems">
+	<summary>
+ 刷新填表菜单
+ </summary>
+	<remarks></remarks>
 </member><member name="M:EVELoggerV2.Form1.updateUI(System.String@)">
 	<summary>
  更新服务器状态标签并提示服务器开服信息
@@ -109,17 +134,18 @@ EVELoggerV2
  </summary>
 	<param name="i"></param>
 	<remarks></remarks>
-</member><member name="M:EVELoggerV2.Form1.StartEVE(System.String)">
+</member><member name="M:EVELoggerV2.Form1.changeItemStatus(System.Boolean@,System.Object@)">
 	<summary>
- 启动EVE
+ 更改某项的显示
  </summary>
-	<param name="ss">超时参数</param>
-	<returns></returns>
+	<param name="k"></param>
+	<param name="obj"></param>
 	<remarks></remarks>
-</member><member name="M:EVELoggerV2.Form1.flushMenuItems">
+</member><member name="M:EVELoggerV2.Form1.UpdateUI4(System.String@)">
 	<summary>
- 刷新填表菜单
+ 更新登录状态标签
  </summary>
+	<param name="i"></param>
 	<remarks></remarks>
 </member><member name="M:EVELoggerV2.Dialog1.Button1_Click(System.Object,System.EventArgs)">
 	<summary>

@@ -30,7 +30,6 @@ H:\VS2010\VB.NET\WebLogger.EVE.Ver1\WebLogger.EVE.Ver1\obj\x86\Release\WebLogger
 H:\VS2010\VB.NET\WebLogger.EVE.Ver1\WebLogger.EVE.Ver1\obj\x86\Release\WebLogger.EVE.Ver1.vbproj.GenerateResource.Cache
 H:\VS2010\VB.NET\WebLogger.EVE.Ver1\WebLogger.EVE.Ver1\obj\x86\Release\WebLogger.EVE.Ver1.exe.manifest
 H:\VS2010\VB.NET\WebLogger.EVE.Ver1\WebLogger.EVE.Ver1\obj\x86\Release\WebLogger.EVE.Ver1.application
-H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\WebLogger.EVE.Ver1.vbproj.GenerateResource.Cache
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\bin\Release\EVELoggerV2.exe.config
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\bin\Release\EVELoggerV2.exe.manifest
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\bin\Release\EVELoggerV2.application
@@ -42,9 +41,10 @@ H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELogger
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.Dialog1.resources
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.Form1.resources
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.Resources.resources
+H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\WebLogger.EVE.Ver1.vbproj.GenerateResource.Cache
+H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.TrustInfo.xml
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.exe.manifest
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.application
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.exe
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.xml
 H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.pdb
-H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.TrustInfo.xml

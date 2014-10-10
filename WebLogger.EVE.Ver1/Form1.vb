@@ -30,7 +30,7 @@ Public Class Form1
     Dim Overtime As Boolean = False
 
     Private Delegate Sub voidDelegate(ByRef i As String)
-
+    Private Delegate Sub FormDelegate(ByRef k As Boolean, ByRef obj As Object)
 #End Region
 
 #Region "窗体事件响应"
@@ -134,18 +134,8 @@ Public Class Form1
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        GetASPNetSessionIDAndLoginAddr()
-        If isRequestCaptcha(ComboBox1.Text) Then
-            Dim Cresult = CaptchaDialog.ShowDialog()
-            If Cresult = Windows.Forms.DialogResult.Cancel Then Exit Sub
-        End If
-        Dim Linfo() = TryLogin(ComboBox1.Text, TextBox1.Text)
-        If Linfo(0) = "0" Then
-            MessageBox.Show(Linfo(1), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        ElseIf Linfo(0) = "1" Then
-            StartEVE(Linfo(1))
-            MessageBox.Show("游戏已启动！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        End If
+        Dim th As Thread = New Thread(AddressOf StartLogin)
+        th.Start()
     End Sub
 
     ''' <summary>
@@ -393,6 +383,97 @@ Public Class Form1
     End Sub
 
     ''' <summary>
+    ''' 启动登录过程
+    ''' </summary>
+    ''' <remarks></remarks>
+    Sub StartLogin()
+        Dim objlist As Object() = {Me.ComboBox1, Me.TextBox1, Me.Button1}
+        'DisableOrEnableObject(objlist, False)
+        Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "获取登录信息……")
+        GetASPNetSessionIDAndLoginAddr()
+        Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "检查验证码……")
+        If isRequestCaptcha(ComboBox1.Text) Then
+            Dim Cresult = CaptchaDialog.ShowDialog()
+            If Cresult = Windows.Forms.DialogResult.Cancel Then
+                Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "验证码获取失败，取消登录")
+                'DisableOrEnableObject(objlist, True)
+                Exit Sub
+            End If
+        End If
+        Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "验证码通过，正在登录……")
+        Dim Linfo() = TryLogin(ComboBox1.Text, TextBox1.Text)
+        If Linfo(0) = "0" Then
+            MessageBox.Show(Linfo(1), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "登录失败，错误.")
+            'DisableOrEnableObject(objlist, True)
+        ElseIf Linfo(0) = "1" Then
+            StartEVE(Linfo(1))
+            Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "登录成功，游戏已启动.")
+            MessageBox.Show("游戏已启动！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            'DisableOrEnableObject(objlist, True)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' 批量处理控件的启用和禁用
+    ''' </summary>
+    ''' <param name="o">控件列表</param>
+    ''' <param name="i">参数</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function DisableOrEnableObject(ByRef o As Object(), ByVal i As Boolean)
+        For Each item As Object In o
+            Me.Invoke(New FormDelegate(AddressOf changeItemStatus), i, o(item))
+        Next
+    End Function
+
+    ''' <summary>
+    ''' 启动EVE
+    ''' </summary>
+    ''' <param name="ss">超时参数</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function StartEVE(Optional ByVal ss As String = "")
+        Try
+            If ss = "" Then ss = sso
+            If ss = "ALREADYSTARTED" Then MsgBox("您的登录已超时，请重新登录")
+            Process.Start(Application.StartupPath + "\bin\exefile.exe", "/noconsole /ssoToken=" + ss)
+
+        Catch ex As Exception
+            MsgBox("打开ExeFile.exe出错，请检查程序是否放置于EVE根目录下！")
+            exitprog()
+            stopping = 1
+            'pingserver()
+            'Me.Close()
+            'Exit Function
+        End Try
+        If ss <> "" Then
+            Timer1.Interval = 300 * 1000
+            Timer1.Start()
+            不退出重新登录ToolStripMenuItem.Enabled = True
+            Overtime = False
+        End If
+    End Function
+
+    ''' <summary>
+    ''' 刷新填表菜单
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub flushMenuItems()
+        Dim f As ToolStripMenuItem = MenuStrip1.Items(0)
+        Dim doitem As ToolStripMenuItem = f.DropDownItems(0)
+        Dim CMStripitem As ToolStripMenuItem = ContextMenuStrip1.Items(1)
+        'Dim doitem2 As ToolStripMenuItem = CMStripitem.DropDownItems(0)
+        doitem.DropDownItems.Clear()
+        ComboBox1.Items.Clear()
+        For i As Integer = 1 To UBound(aAccounts)
+            doitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
+            ComboBox1.Items.Add(aAccounts(i).user)
+            CMStripitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
+        Next
+    End Sub
+
+    ''' <summary>
     ''' 更新服务器状态标签并提示服务器开服信息
     ''' </summary>
     ''' <param name="i"></param>
@@ -442,49 +523,22 @@ Public Class Form1
     End Sub
 
     ''' <summary>
-    ''' 启动EVE
+    ''' 更改某项的显示
     ''' </summary>
-    ''' <param name="ss">超时参数</param>
-    ''' <returns></returns>
+    ''' <param name="k"></param>
+    ''' <param name="obj"></param>
     ''' <remarks></remarks>
-    Private Function StartEVE(Optional ByVal ss As String = "")
-        Try
-            If ss = "" Then ss = sso
-            If ss = "ALREADYSTARTED" Then MsgBox("您的登录已超时，请重新登录")
-            Process.Start(Application.StartupPath + "\bin\exefile.exe", "/noconsole /ssoToken=" + ss)
-
-        Catch ex As Exception
-            MsgBox("打开ExeFile.exe出错，请检查程序是否放置于EVE根目录下！")
-            exitprog()
-            stopping = 1
-            'pingserver()
-            'Me.Close()
-            'Exit Function
-        End Try
-        If ss <> "" Then
-            Timer1.Interval = 300 * 1000
-            Timer1.Start()
-            不退出重新登录ToolStripMenuItem.Enabled = True
-            Overtime = False
-        End If
-    End Function
+    Sub changeItemStatus(ByRef k As Boolean, ByRef obj As Object)
+        obj.enabled = k
+    End Sub
 
     ''' <summary>
-    ''' 刷新填表菜单
+    ''' 更新登录状态标签
     ''' </summary>
+    ''' <param name="i"></param>
     ''' <remarks></remarks>
-    Public Sub flushMenuItems()
-        Dim f As ToolStripMenuItem = MenuStrip1.Items(0)
-        Dim doitem As ToolStripMenuItem = f.DropDownItems(0)
-        Dim CMStripitem As ToolStripMenuItem = ContextMenuStrip1.Items(1)
-        'Dim doitem2 As ToolStripMenuItem = CMStripitem.DropDownItems(0)
-        doitem.DropDownItems.Clear()
-        ComboBox1.Items.Clear()
-        For i As Integer = 1 To UBound(aAccounts)
-            doitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
-            ComboBox1.Items.Add(aAccounts(i).user)
-            CMStripitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
-        Next
+    Sub UpdateUI4(ByRef i As String)
+        Me.Label6.Text = i
     End Sub
 
 #End Region
