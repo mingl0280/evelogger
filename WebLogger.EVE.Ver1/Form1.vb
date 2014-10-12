@@ -11,6 +11,7 @@ Imports System.Diagnostics
 Imports System.Xml
 Imports System.Security.Cryptography
 Imports Microsoft.VisualBasic.Devices
+Imports System.Runtime.Remoting.Messaging
 
 Public Class Form1
 
@@ -31,6 +32,7 @@ Public Class Form1
 
     Private Delegate Sub voidDelegate(ByRef i As String)
     Private Delegate Sub FormDelegate(ByRef k As Boolean, ByRef obj As Object)
+    Private Delegate Function AsyncMethodCaller(s As String) As String
 #End Region
 
 #Region "窗体事件响应"
@@ -135,7 +137,7 @@ Public Class Form1
     ''' <remarks></remarks>
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim th As Thread = New Thread(AddressOf StartLogin)
-        th.Start()
+        th.Start(New String() {ComboBox1.Text, TextBox1.Text})
     End Sub
 
     ''' <summary>
@@ -209,7 +211,7 @@ Public Class Form1
         Try
             Shell("eve.exe")
         Catch ex As Exception
-            MsgBox("无法打开eve.exe,请确定本程序已经放置于EVE Online根目录下!!!")
+            msgbox("无法打开eve.exe,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
         End Try
     End Sub
@@ -218,7 +220,7 @@ Public Class Form1
         Try
             Shell("repair.exe")
         Catch ex As Exception
-            MsgBox("无法打开repair.exe,请确定本程序已经放置于EVE Online根目录下!!!")
+            msgbox("无法打开repair.exe,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
         End Try
     End Sub
@@ -237,10 +239,10 @@ Public Class Form1
         ValidClientVersion(valsuc)
         Select Case valsuc
             Case 1
-                MsgBox("您使用的客户端已经是最新版！")
+                msgbox("您使用的客户端已经是最新版！")
                 Label5.Text = "当前客户端已经是最新版！"
             Case -1
-                MsgBox("验证过程出错，请稍后再试。")
+                msgbox("验证过程出错，请稍后再试。")
                 Label5.Text = "验证过程出错，请稍后再试。"
             Case Else
                 Label5.Text = "正在更新中..."
@@ -248,7 +250,7 @@ Public Class Form1
     End Sub
 
     Private Sub 不退出重新登录ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 不退出重新登录ToolStripMenuItem.Click
-        If sso = "" Then MsgBox("你还没有登录过！")
+        If sso = "" Then msgbox("你还没有登录过！")
         StartEVE()
     End Sub
 
@@ -385,14 +387,15 @@ Public Class Form1
     ''' <summary>
     ''' 启动登录过程
     ''' </summary>
+    ''' <param name="userinfo">用户信息</param>
     ''' <remarks></remarks>
-    Sub StartLogin()
+    Sub StartLogin(ByVal userinfo() As String)
         Dim objlist As Object() = {Me.ComboBox1, Me.TextBox1, Me.Button1}
         'DisableOrEnableObject(objlist, False)
         Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "获取登录信息……")
         GetASPNetSessionIDAndLoginAddr()
         Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "检查验证码……")
-        If isRequestCaptcha(ComboBox1.Text) Then
+        If isRequestCaptcha(userinfo(0)) Then
             Dim Cresult = CaptchaDialog.ShowDialog()
             If Cresult = Windows.Forms.DialogResult.Cancel Then
                 Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "验证码获取失败，取消登录")
@@ -401,7 +404,7 @@ Public Class Form1
             End If
         End If
         Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "验证码通过，正在登录……")
-        Dim Linfo() = TryLogin(ComboBox1.Text, TextBox1.Text)
+        Dim Linfo() = TryLogin(userinfo(0), userinfo(1))
         If Linfo(0) = "0" Then
             MessageBox.Show(Linfo(1), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "登录失败，错误.")
@@ -436,11 +439,11 @@ Public Class Form1
     Private Function StartEVE(Optional ByVal ss As String = "")
         Try
             If ss = "" Then ss = sso
-            If ss = "ALREADYSTARTED" Then MsgBox("您的登录已超时，请重新登录")
+            If ss = "ALREADYSTARTED" Then msgbox("您的登录已超时，请重新登录")
             Process.Start(Application.StartupPath + "\bin\exefile.exe", "/noconsole /ssoToken=" + ss)
 
         Catch ex As Exception
-            MsgBox("打开ExeFile.exe出错，请检查程序是否放置于EVE根目录下！")
+            msgbox("打开ExeFile.exe出错，请检查程序是否放置于EVE根目录下！")
             exitprog()
             stopping = 1
             'pingserver()
@@ -538,9 +541,12 @@ Public Class Form1
     ''' <param name="i"></param>
     ''' <remarks></remarks>
     Sub UpdateUI4(ByRef i As String)
-        Me.Label6.Text = i
+        Me.Label4.Text = i
     End Sub
 
+    Sub readInfo(ByRef s As String)
+        s = ComboBox1.Text
+    End Sub
 #End Region
 
 End Class

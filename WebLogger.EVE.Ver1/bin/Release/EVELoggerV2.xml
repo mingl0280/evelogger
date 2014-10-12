@@ -91,10 +91,11 @@ EVELoggerV2
  </summary>
 	<param name="s">程序是否已经退出</param>
 	<remarks></remarks>
-</member><member name="M:EVELoggerV2.Form1.StartLogin">
+</member><member name="M:EVELoggerV2.Form1.StartLogin(System.String[])">
 	<summary>
  启动登录过程
  </summary>
+	<param name="userinfo">用户信息</param>
 	<remarks></remarks>
 </member><member name="M:EVELoggerV2.Form1.DisableOrEnableObject(System.Object[]@,System.Boolean)">
 	<summary>

@@ -48,14 +48,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="EVELoggerV2.exe" size="1568768">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="EVELoggerV2.exe" size="1569792">
       <assemblyIdentity name="EVELoggerV2" version="2.0.0.0" publicKeyToken="240629BE28BD9050" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>VKVs5MFGmCrmRkI+PdR17DfkY/c=</dsig:DigestValue>
+        <dsig:DigestValue>l+ElxikMmqzqh5toVJNhJ6qb/zA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

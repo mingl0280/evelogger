@@ -327,11 +327,10 @@ Module Module1
             File.Create(Application.StartupPath + "\LaunchSET.ini")
             'MsgBox("无法打开LaunchSET.ini,请确定本程序已经放置于EVE Online根目录下!!!")
             'Return 0
-        Else
-            Dim path As String
-            path = Application.StartupPath + "\LaunchSET.ini"
-            NativeMethods.WritePrivateProfileString("main", key, str, path)
         End If
+        Dim path As String
+        path = Application.StartupPath + "\LaunchSET.ini"
+        NativeMethods.WritePrivateProfileString("main", key, str, path)
     End Function
 
 #End Region
