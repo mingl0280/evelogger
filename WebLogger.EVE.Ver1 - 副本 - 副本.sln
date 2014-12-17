@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WebLogger.EVE.Ver1", "WebLogger.EVE.Ver1\WebLogger.EVE.Ver1.vbproj", "{A95C8142-64F1-4AB5-9035-42C1AFFF4B16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A95C8142-64F1-4AB5-9035-42C1AFFF4B16}.Debug|x86.ActiveCfg = Debug|x86
+		{A95C8142-64F1-4AB5-9035-42C1AFFF4B16}.Debug|x86.Build.0 = Debug|x86
+		{A95C8142-64F1-4AB5-9035-42C1AFFF4B16}.Release|x86.ActiveCfg = Release|x86
+		{A95C8142-64F1-4AB5-9035-42C1AFFF4B16}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

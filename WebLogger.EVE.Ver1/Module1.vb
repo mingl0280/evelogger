@@ -122,7 +122,8 @@ Module Module1
             readini("build", build)
             dnf.Dispose()
         Catch ex As Exception
-            MsgBox("网络连接错误，程序即将退出。。。")
+            msgbox("网络连接错误，程序即将退出。。。")
+            exitprog()
             i = -1
         End Try
         Try
@@ -531,17 +532,9 @@ Module Module1
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function exitprog()
-        Dim ccul, chcul As CultureInfo
-        ccul = CultureInfo.CurrentCulture
-        chcul = New CultureInfo("zh-cn")
         msgshown = True
-        If ccul.Name = chcul.Name And Not msgshown Then
-            MsgBox(My.Resources.MSG_CH)
-        Else
-            MsgBox(My.Resources.MSG_EN)
-        End If
-        If Debugger.IsAttached Then
-            msgshown = True
+        MsgBox(My.Resources.MSG_CH)
+        If Debugger.IsAttached = True Then
             Exit Function
         End If
         Application.Exit()
