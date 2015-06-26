@@ -348,7 +348,7 @@ Module Module1
         Dim isex As Integer
         isex = File.Exists("LaunchSET.ini")
         If Not isex Then
-            File.Create(Application.StartupPath + "\LaunchSET.ini")
+            File.Create(Application.StartupPath + "\LaunchSET.ini").Close()
             'MsgBox("无法打开LaunchSET.ini,请确定本程序已经放置于EVE Online根目录下!!!")
             'Return 0
         End If

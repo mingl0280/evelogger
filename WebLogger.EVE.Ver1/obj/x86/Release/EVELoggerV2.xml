@@ -287,6 +287,27 @@ EVELoggerV2
 	<param name="password"></param>
 	<returns></returns>
 	<remarks></remarks>
+</member><member name="M:EVELoggerV2.Module1.GetClientToken(System.String)">
+	<summary>
+ 获取客户端Token
+ </summary>
+	<param name="BearerToken">获得的远端Token</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:EVELoggerV2.Module1.GetWebResponse(System.String,System.Boolean,System.Boolean,System.String,System.String,System.String,System.String,EVELoggerV2.Module1.Headers[])">
+	<summary>
+ 获取Web页面信息和URI
+ </summary>
+	<param name="uri">获取Web页面信息和URI</param>
+	<param name="Method">访问模式，True=POST;False=GET</param>
+	<param name="AllowRedirect">是否允许重定向</param>
+	<param name="SendEncodingStr">(可选)发送字符串编码</param>
+	<param name="ReturnEncodingStr">(可选)接收字符串编码</param>
+	<param name="POSTData">(可选)Post参数串</param>
+	<param name="AcceptStr">(可选)Accept类型字符串</param>
+	<param name="HeadersArray">(可选)其它HTTP头</param>
+	<returns>返回页面的HTML代码和URI</returns>
+	<remarks></remarks>
 </member><member name="M:EVELoggerV2.Module1.GetASPNetSessionIDAndLoginAddr">
 	<summary>
  获得Session和登录地址

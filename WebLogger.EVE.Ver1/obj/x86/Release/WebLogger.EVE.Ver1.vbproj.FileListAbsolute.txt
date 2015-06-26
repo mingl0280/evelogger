@@ -47,3 +47,5 @@ H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\bin\Release\Microsoft.Vis
 H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\bin\Release\Microsoft.VisualBasic.PowerPacks.Vs.resources.dll
 H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\bin\Release\Microsoft.VisualBasic.PowerPacks.Vs.xml
 H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\WebLogger.EVE.Ver1.vbprojResolveAssemblyReference.cache
+H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\bin\Release\Microsoft.WindowsAPICodePack.DirectX.dll
+H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Release\EVELoggerV2.OvalCircle.resources
