@@ -2,7 +2,6 @@
 Imports System.Text
 Imports System.Threading
 Imports System.Text.Encoding
-Imports System.Data
 Imports System.Net
 Imports System.Web
 Imports System.Windows.Forms
@@ -12,6 +11,9 @@ Imports System.Xml
 Imports System.Security.Cryptography
 Imports Microsoft.VisualBasic.Devices
 Imports System.Runtime.Remoting.Messaging
+Imports Microsoft.WindowsAPICodePack.DirectX
+Imports System.Text.RegularExpressions
+
 
 Public Class Form1
 
@@ -29,6 +31,7 @@ Public Class Form1
     Dim pt, pt2 As Thread
     Dim FWDStatus As String = ""
     Dim Overtime As Boolean = False
+    Private isSupportDx11 As Boolean = False
 
     Private Delegate Sub voidDelegate(ByRef i As String)
     Private Delegate Sub FormDelegate(ByRef k As Boolean, ByRef obj As Object)
@@ -73,6 +76,39 @@ Public Class Form1
         flushMenuItems()                 '刷新列表框和菜单
         pingserver()                     '启动对服务器的ping进程
         Timer2.Start()
+
+        OvalCircle1.New2(New SolidBrush(Color.Red), OvalCircle1.Width, OvalCircle1.Height)
+
+        Dim g = Graphics.Factory.Create() 'this graphics stands for DX->Graphics
+        For Each it In g.Adapters
+            Dim r = it.Description.Description
+            If r.StartsWith("NVIDIA") Then
+                If r.IndexOf("Titan") Then
+                    isSupportDx11 = True
+                    Exit For
+                Else
+                    If Val(Regex.Replace(r, "[a-z]", "", RegexOptions.IgnoreCase).Trim().Replace(" ", "")) >= 400 Then
+                        isSupportDx11 = True
+                        Exit For
+                    End If
+                End If
+            Else
+                If r.IndexOf("Radeon") >= 0 Then
+                    If Val(Regex.Replace(r, "[a-z]", "", RegexOptions.IgnoreCase).Trim().Replace(" ", "")) >= 5000 Then
+                        isSupportDx11 = True
+                        Exit For
+                    End If
+                End If
+            End If
+        Next
+        Dim OSV As New Version(My.Computer.Info.OSVersion)
+        If OSV.Major < 6 Then isSupportDx11 = False
+
+        If isSupportDx11 Then
+            Label7.Text = "DirectX 11"
+        Else
+            Label7.Text = "DirectX 9"
+        End If
     End Sub
 
     ''' <summary>
@@ -127,6 +163,7 @@ Public Class Form1
         If ComboBox1.Text <> "" And ComboBox1.SelectedIndex >= 0 Then
             TextBox1.Text = decode(aAccounts(ComboBox1.SelectedIndex + 1).password_encrypted)
         End If
+        'Debug.WriteLine(ComboBox1.Text)
     End Sub
 
     ''' <summary>
@@ -405,6 +442,8 @@ Public Class Form1
         End If
         Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "验证码通过，正在登录……")
         Dim Linfo() = TryLogin(userinfo(0), userinfo(1))
+        Dim LinfoLen = UBound(Linfo)
+        Debug.WriteLine(LinfoLen)
         If Linfo(0) = "0" Then
             MessageBox.Show(Linfo(1), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "登录失败，错误.")
@@ -414,6 +453,10 @@ Public Class Form1
             Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "登录成功，游戏已启动.")
             MessageBox.Show("游戏已启动！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
             'DisableOrEnableObject(objlist, True)
+        ElseIf Linfo(0) = "2" Then
+            StartEVE(Linfo(2))
+            Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "登录成功，游戏已启动.")
+            MessageBox.Show("游戏已启动！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
 
@@ -440,7 +483,7 @@ Public Class Form1
         Try
             If ss = "" Then ss = sso
             If ss = "ALREADYSTARTED" Then msgbox("您的登录已超时，请重新登录")
-            Process.Start(Application.StartupPath + "\bin\exefile.exe", "/noconsole /ssoToken=" + ss)
+            Process.Start(Application.StartupPath + "\bin\exefile.exe", "/noconsole /ssoToken=" + ss + " /triPlatform=" + If(isSupportDx11, "dx11", "dx9"))
 
         Catch ex As Exception
             msgbox("打开ExeFile.exe出错，请检查程序是否放置于EVE根目录下！")
@@ -472,6 +515,7 @@ Public Class Form1
         For i As Integer = 1 To UBound(aAccounts)
             doitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
             ComboBox1.Items.Add(aAccounts(i).user)
+            CMStripitem.DropDownItems.Clear()
             CMStripitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
         Next
     End Sub
@@ -484,11 +528,13 @@ Public Class Form1
     Sub updateUI(ByRef i As String)
         Me.Label4.Text = i
         If i.IndexOf("正常开服") > 0 Then
-            OvalShape1.BorderColor = Color.Lime
-            OvalShape1.BackColor = Color.Lime
+            'OvalShape1.BorderColor = Color.Lime
+            OvalCircle1.Color = New SolidBrush(Color.Lime)
+            'OvalShape1.BackColor = Color.Lime
         Else
-            OvalShape1.BorderColor = Color.Red
-            OvalShape1.BackColor = Color.Red
+            'OvalShape1.BorderColor = Color.Red
+            OvalCircle1.Color = New SolidBrush(Color.Red)
+            'OvalShape1.BackColor = Color.Red
         End If
         Dim KSUB As String = i.Substring(0, 10)
         If KSUB <> FWDStatus Then

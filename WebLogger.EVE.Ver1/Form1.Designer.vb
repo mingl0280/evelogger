@@ -54,8 +54,9 @@ Partial Class Form1
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.OvalShape1 = New Microsoft.VisualBasic.PowerPacks.OvalShape()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.OvalCircle1 = New EVELoggerV2.OvalCircle()
         Me.MenuStrip1.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -65,7 +66,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.客户端设定ToolStripMenuItem, Me.客户端设定ToolStripMenuItem1, Me.帮助ToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(384, 25)
+        Me.MenuStrip1.Size = New System.Drawing.Size(442, 25)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -205,20 +206,20 @@ Partial Class Form1
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.Location = New System.Drawing.Point(85, 35)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(178, 20)
+        Me.ComboBox1.Size = New System.Drawing.Size(264, 20)
         Me.ComboBox1.TabIndex = 5
         '
         'TextBox1
         '
         Me.TextBox1.Location = New System.Drawing.Point(85, 68)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(178, 21)
+        Me.TextBox1.Size = New System.Drawing.Size(264, 21)
         Me.TextBox1.TabIndex = 6
         Me.TextBox1.UseSystemPasswordChar = True
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(287, 66)
+        Me.Button1.Location = New System.Drawing.Point(355, 65)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(75, 23)
         Me.Button1.TabIndex = 7
@@ -227,7 +228,7 @@ Partial Class Form1
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(287, 33)
+        Me.Button2.Location = New System.Drawing.Point(355, 32)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 23)
         Me.Button2.TabIndex = 8
@@ -246,45 +247,54 @@ Partial Class Form1
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(78, 126)
+        Me.Label4.Location = New System.Drawing.Point(42, 130)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(227, 12)
+        Me.Label4.Size = New System.Drawing.Size(191, 12)
         Me.Label4.TabIndex = 11
-        Me.Label4.Text = "服务器状态：正常开服 在线人数：123456"
+        Me.Label4.Text = "服务器状态：正常开服 在线人数："
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(215, 102)
+        Me.Label5.Location = New System.Drawing.Point(275, 102)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(137, 12)
         Me.Label5.TabIndex = 12
         Me.Label5.Text = "当前客户端已是最新版！"
         '
-        'ShapeContainer1
+        'Label6
         '
-        Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.OvalShape1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(384, 151)
-        Me.ShapeContainer1.TabIndex = 13
-        Me.ShapeContainer1.TabStop = False
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(275, 130)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(89, 12)
+        Me.Label6.TabIndex = 14
+        Me.Label6.Text = "当前显卡支持："
         '
-        'OvalShape1
+        'Label7
         '
-        Me.OvalShape1.BackColor = System.Drawing.Color.Red
-        Me.OvalShape1.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque
-        Me.OvalShape1.BorderColor = System.Drawing.Color.Red
-        Me.OvalShape1.Location = New System.Drawing.Point(58, 127)
-        Me.OvalShape1.Name = "OvalShape1"
-        Me.OvalShape1.Size = New System.Drawing.Size(10, 10)
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(362, 130)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(0, 12)
+        Me.Label7.TabIndex = 16
+        '
+        'OvalCircle1
+        '
+        Me.OvalCircle1.BackColor = System.Drawing.Color.Transparent
+        Me.OvalCircle1.Location = New System.Drawing.Point(22, 128)
+        Me.OvalCircle1.Name = "OvalCircle1"
+        Me.OvalCircle1.Size = New System.Drawing.Size(15, 15)
+        Me.OvalCircle1.TabIndex = 15
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(384, 151)
+        Me.ClientSize = New System.Drawing.Size(442, 151)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.OvalCircle1)
+        Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label3)
@@ -295,7 +305,6 @@ Partial Class Form1
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.MenuStrip1)
-        Me.Controls.Add(Me.ShapeContainer1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
@@ -338,8 +347,9 @@ Partial Class Form1
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
-    Friend WithEvents OvalShape1 As Microsoft.VisualBasic.PowerPacks.OvalShape
     Friend WithEvents 快速登录ToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents OvalCircle1 As EVELoggerV2.OvalCircle
+    Friend WithEvents Label7 As System.Windows.Forms.Label
 
 End Class

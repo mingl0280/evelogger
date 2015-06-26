@@ -2,7 +2,6 @@
 Imports System.Text
 Imports System.Threading
 Imports System.Text.Encoding
-Imports System.Data
 Imports System.Net
 Imports System.Web
 Imports System.Windows.Forms
@@ -71,6 +70,20 @@ Module Module1
         Dim password_encrypted As String
     End Structure
 
+    Structure Headers
+        Public Sub New(ByVal Header As String, ByVal Content As String)
+            head = Header
+            cont = Content
+        End Sub
+        Public head As String
+        Public cont As String
+    End Structure
+
+    Structure htmlDocumentResponse
+        Public iHTML As String
+        Public uri As String
+    End Structure
+
     ''' <summary>
     ''' 定义全局存储账户信息数组
     ''' </summary>
@@ -85,15 +98,17 @@ Module Module1
     ''' </summary>
     ''' <remarks></remarks>
     Private Const ZToN As String = "0123456789"
-    Public Const LoginPageURI As String = "https://auth.eve-online.com.cn/Account/LogOn?ReturnUrl=%2foauth%2fauthorize%3fclient_id%3deveclient%26scope%3deveClientLogin%26response_type%3dtoken%26redirect_uri%3dhttps%253A%252F%252Fauth.eve-online.com.cn%252Flauncher%253Fclient_id%253Deveclient%26lang%3dzh%26mac%3dNone&client_id=eveclient&scope=eveClientLogin&response_type=token&redirect_uri=https%3A%2F%2Fauth.eve-online.com.cn%2Flauncher%3Fclient_id%3Deveclient&lang=zh&mac=None"
+    Public Const LoginPageURI As String = "https://auth.eve-online.com.cn/Account/LogOn?ReturnUrl=%2foauth%2fauthorize%3fclient_id%3deveLauncherSerenity%26lang%3dzh%26response_type%3dtoken%26redirect_uri%3dhttps%3a%2f%2fauth.eve-online.com.cn%2flauncher%3fclient_id%3deveLauncherSerenity%26scope%3deveClientToken%2520user&client_id=eveLauncherSerenity&lang=zh&response_type=token&redirect_uri=https://auth.eve-online.com.cn/launcher?client_id=eveLauncherSerenity&scope=eveClientToken%20user"
+    'Public Const LoginPageURI As String = "https://auth.eve-online.com.cn/Account/LogOn?ReturnUrl=%2foauth%2fauthorize%3fclient_id%3deveclient%26scope%3deveClientLogin%26response_type%3dtoken%26redirect_uri%3dhttps%253A%252F%252Fauth.eve-online.com.cn%252Flauncher%253Fclient_id%253Deveclient%26lang%3dzh%26mac%3dNone&client_id=eveclient&scope=eveClientLogin&response_type=token&redirect_uri=https%3A%2F%2Fauth.eve-online.com.cn%2Flauncher%3Fclient_id%3Deveclient&lang=zh&mac=None"
     Public Const PostContentType As String = "application/x-www-form-urlencoded"
     Public Const PostContentHeader As String = "Content-Type"
     Public Const UserAgentHeader As String = "UserAgent"
-    Public Const UserAgentValue As String = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:32.0) Gecko/20100101 Firefox/32.0"
+    Public Const UserAgentValue As String = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0"
     Public Const captchaURLHeader As String = "https://captcha.tiancity.com:442/CheckSwitch.ashx?jsoncallback=jQuery"
     Public Const GUIDURL As String = "https://auth.eve-online.com.cn/Account/GenerateGuid/"
     Public Const captchaImageURL As String = "https://captcha.tiancity.com:442/getimage.ashx?tid="
     Public Const vFailString As String = "<div class=""validation-summary-errors"">"
+    Public Const AcceptString As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
 
 #End Region
 
@@ -128,12 +143,12 @@ Module Module1
         End Try
         Try
             If sync <> sst(1) And build <> sst(0) Then
-                MsgBox("你的客户端需要更新，点击""确定""启动官方启动器以完成更新。")
+                msgbox("你的客户端需要更新，点击""确定""启动官方启动器以完成更新。")
                 Shell("eve.exe")
                 i = 2
             End If
         Catch ex As Exception
-            MsgBox("无法打开eve.exe,请确定本程序已经放置于EVE Online根目录下!!!")
+            msgbox("无法打开eve.exe,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
             i = -1
         End Try
@@ -232,7 +247,15 @@ Module Module1
             inttemp(i) = Val(strtemp(i))
             chrtemp = chrtemp + Chr(inttemp(i) Xor key)
         Next
+        'Debug.WriteLine(chrtemp)
         Return chrtemp
+
+    End Function
+
+    Private Function encode_adv(ByVal stra As String) As Byte()
+        Dim DesEncryptor As New TripleDESCryptoServiceProvider
+
+
     End Function
 
 #End Region
@@ -249,7 +272,7 @@ Module Module1
         Dim isex As Integer
         isex = IO.File.Exists("start.ini")
         If Not isex Then
-            MsgBox("无法打开Start.ini,请确定本程序已经放置于EVE Online根目录下!!!")
+            msgbox("无法打开Start.ini,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
             Return 0
         Else
@@ -274,7 +297,7 @@ Module Module1
         Dim isex As Integer
         isex = IO.File.Exists("start.ini")
         If Not isex Then
-            MsgBox("无法打开Start.ini,请确定本程序已经放置于EVE Online根目录下!!!")
+            msgbox("无法打开Start.ini,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
             Return 0
         Else
@@ -300,7 +323,7 @@ Module Module1
         Dim isex As Integer
         isex = IO.File.Exists("LaunchSET.ini")
         If Not isex Then
-            MsgBox("无法打开LaunchSET.ini,请确定本程序已经放置于EVE Online根目录下!!!")
+            msgbox("无法打开LaunchSET.ini,请确定本程序已经放置于EVE Online根目录下!!!")
             IO.File.Create(Application.StartupPath + "\LaunchSET.ini").Dispose()
             Return 0
         Else
@@ -345,6 +368,7 @@ Module Module1
     ''' <remarks>Account_Names=123|123|123|234|345
     '''          Passwords=abc|bcd|nil|bcd|bcd</remarks>
     Public Function FillAccountsInfo() As AccountInfo()
+        encode_adv("")
         Dim sSrcStr, sSrcPwd As String
         Dim sUserStr(), sPwdStr() As String
         Dim RetArray(0) As AccountInfo
@@ -426,27 +450,24 @@ Module Module1
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function TryLogin(ByVal username As String, ByVal password As String) As String()
-        Dim webReq As WebRequest = HttpWebRequest.Create(LoginAddr)
-        Dim param As String = "UserName=" + username + "&Password=" + password + "&CaptchaToken=" + Guid + "&Captcha=" + captcha
-        Dim bytes() = Encoding.ASCII.GetBytes(param)
-        With webReq
-            SetCookieHeaders(webReq, CookieStr)
-            .Method = "POST"
-            .ContentType = "application/x-www-form-urlencoded"
-            .Headers.Add("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3")
-            .ContentLength = param.Length
-            .Headers.Add(UserAgentHeader, UserAgentValue)
-            Dim reqStream As Stream = webReq.GetRequestStream()
-            reqStream.Write(bytes, 0, bytes.Length)
-            reqStream.Flush()
-        End With
-        Dim sData As Stream
-        Dim webResp As HttpWebResponse = webReq.GetResponse()
-        sData = webResp.GetResponseStream()
-        Dim innerHTML = New StreamReader(sData, Encoding.GetEncoding("UTF-8")).ReadToEnd()
-        sData.Close()
-        Dim respURI = webResp.ResponseUri.AbsoluteUri
+        '获取Launcher Token
+        Dim param As String = "UserName=" + username + "&Password=" + password + "&CaptchaToken=" + GUID + "&Captcha=" + captcha
+        Dim hArr() As Headers = {New Headers(UserAgentHeader, UserAgentValue), New Headers("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3")}
+        Dim WebResponse As htmlDocumentResponse
+        Dim innerHTML As String
+        Dim respURI As String
         Dim LINFO(2) As String
+        '错误处理
+        Try
+            WebResponse = GetWebResponse(LoginAddr, True, True, , , param, "", hArr)
+            innerHTML = WebResponse.iHTML
+            respURI = WebResponse.uri
+        Catch ex As Exception
+            LINFO(0) = "0"
+            LINFO(1) = ex.Message
+            Return LINFO
+        End Try
+
 
         If innerHTML.IndexOf("已登录") > 0 Then
             Dim st, ed As Integer
@@ -456,9 +477,29 @@ Module Module1
             For i As Integer = st To ed
                 ss += respURI(i)
             Next
-            LINFO(0) = "1"
-            LINFO(1) = ss
+            '获取客户端Client Token
+            If innerHTML.IndexOf("Bearer") > 0 Or respURI.IndexOf("Bearer") > 0 Then
+                ReDim Preserve LINFO(3)
+                Dim ClientToken As String
+                '如果网络出错
+                Try
+                    ClientToken = GetClientToken(ss)
+                Catch ex As Exception
+                    ClientToken = "Error:" + ex.Message
+                End Try
+                If ClientToken.StartsWith("Error") Then
+                    LINFO(0) = "0"
+                    LINFO(1) = ClientToken
+                End If
+                LINFO(0) = "2"
+                LINFO(1) = ss
+                LINFO(2) = ClientToken
+            Else
+                LINFO(0) = "1"
+                LINFO(1) = ss
+            End If
         Else
+            '登录报错处理
             Dim sp As Integer = innerHTML.IndexOf(vFailString) + vFailString.Length
             Dim endp As Integer = innerHTML.IndexOf("</div>", sp)
             Dim info As String = innerHTML.Substring(sp, endp - sp).Replace("<span>", "").Replace("</span>", "").Replace("<ul>", "").Replace("<li>", vbCrLf).Replace("</li>", "").Replace("</ul>", "")
@@ -466,6 +507,88 @@ Module Module1
             LINFO(1) = info
         End If
         Return LINFO
+    End Function
+
+    ''' <summary>
+    ''' 获取客户端Token
+    ''' </summary>
+    ''' <param name="BearerToken">获得的远端Token</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function GetClientToken(ByVal BearerToken As String) As String
+        Dim url = "https://auth.eve-online.com.cn//launcher/token?accesstoken=" + BearerToken
+        Dim headerArray() As Headers = {New Headers(UserAgentHeader, UserAgentValue)}
+        Dim Resp As htmlDocumentResponse = GetWebResponse(url, False, False, , , , , headerArray)
+        Dim uri = Resp.uri
+        Dim innerHTML = Resp.iHTML
+        Dim st, ed As Integer
+        Dim ss As String = New String("")
+        st = innerHTML.IndexOf("access_token=") + Len("access_token=")
+        ed = innerHTML.IndexOf("&", st) - 1
+        For i As Integer = st To ed
+            ss += innerHTML(i)
+        Next
+        Return ss
+    End Function
+
+    ''' <summary>
+    ''' 获取Web页面信息和URI
+    ''' </summary>
+    ''' <param name="uri">获取Web页面信息和URI</param>
+    ''' <param name="Method">访问模式，True=POST;False=GET</param>
+    ''' <param name="AllowRedirect">是否允许重定向</param>
+    ''' <param name="SendEncodingStr">(可选)发送字符串编码</param>
+    ''' <param name="ReturnEncodingStr">(可选)接收字符串编码</param>
+    ''' <param name="POSTData">(可选)Post参数串</param>
+    ''' <param name="AcceptStr">(可选)Accept类型字符串</param>
+    ''' <param name="HeadersArray">(可选)其它HTTP头</param>
+    ''' <returns>返回页面的HTML代码和URI</returns>
+    ''' <remarks></remarks>
+    Private Function GetWebResponse(ByVal uri As String, _
+                                    ByVal Method As Boolean, _
+                                    ByVal AllowRedirect As Boolean, _
+                                    Optional SendEncodingStr As String = "ASCII", _
+                                    Optional ReturnEncodingStr As String = "UTF-8", _
+                                    Optional POSTData As String = "", _
+                                    Optional AcceptStr As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", _
+                                    Optional ByVal HeadersArray() As Headers = Nothing) As htmlDocumentResponse
+        Dim webReq As HttpWebRequest = HttpWebRequest.Create(uri)
+        SetCookieHeaders(webReq, CookieStr)
+        With webReq
+            .Accept = AcceptStr
+            If Not IsNothing(HeadersArray) Then
+                For Each it In HeadersArray
+                    If Not IsNothing(it.head) Then .Headers.Add(it.head, it.cont)
+                Next
+            Else
+                .Headers.Add(UserAgentHeader, UserAgentValue)
+            End If
+            .AllowAutoRedirect = AllowRedirect
+        End With
+        If Method = True Then
+            Dim bytes() = Encoding.GetEncoding(SendEncodingStr).GetBytes(POSTData)
+            With webReq
+                .Method = "POST"
+                .ContentType = "application/x-www-form-urlencoded"
+                .ContentLength = POSTData.Length
+                Dim reqstream As Stream = .GetRequestStream()
+                reqstream.Write(bytes, 0, bytes.Length)
+                reqstream.Flush()
+            End With
+        ElseIf Method = False Then
+            With webReq
+                .Method = "GET"
+            End With
+        End If
+        Dim sData As Stream
+        Dim webResp As HttpWebResponse = webReq.GetResponse()
+        sData = webResp.GetResponseStream()
+        Dim innerHTML = New StreamReader(sData, Encoding.GetEncoding(ReturnEncodingStr)).ReadToEnd()
+        sData.Close()
+        Dim RetValue As htmlDocumentResponse
+        RetValue.uri = webResp.ResponseUri.AbsoluteUri
+        RetValue.iHTML = innerHTML
+        Return RetValue
     End Function
 
     ''' <summary>
@@ -533,7 +656,7 @@ Module Module1
     ''' <remarks></remarks>
     Public Function exitprog()
         msgshown = True
-        MsgBox(My.Resources.MSG_CH)
+        msgbox(My.Resources.MSG_CH)
         If Debugger.IsAttached = True Then
             Exit Function
         End If
