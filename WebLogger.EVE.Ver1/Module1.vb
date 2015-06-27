@@ -22,6 +22,7 @@ Module Module1
         Private Function NativeMethods()
 
         End Function
+
         Private Function NativeMethods(ByVal i As Integer)
             Dim xtendarr(i) As String
             xtendarr(0) = "0-Methods Created"
@@ -254,8 +255,6 @@ Module Module1
 
     Private Function encode_adv(ByVal stra As String) As Byte()
         Dim DesEncryptor As New TripleDESCryptoServiceProvider
-
-
     End Function
 
 #End Region
@@ -596,7 +595,7 @@ Module Module1
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function GetASPNetSessionIDAndLoginAddr() As String
+    Public Sub GetASPNetSessionIDAndLoginAddr()
         Dim wDownloader As WebClient = New WebClient
         wDownloader.Headers.Add(PostContentHeader, PostContentType)
         wDownloader.Headers.Add(UserAgentHeader, UserAgentHeader)
@@ -611,7 +610,7 @@ Module Module1
         Dim endp As Integer = innerHTML.IndexOf("""", startp)
         LoginAddr = "https://auth.eve-online.com.cn" + innerHTML.Substring(startp, endp - startp)
         wDownloader.Dispose()
-    End Function
+    End Sub
 
     ''' <summary>
     ''' 设定登录Cookie
@@ -620,7 +619,7 @@ Module Module1
     ''' <param name="CookieString"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function SetCookieHeaders(ByRef hClient As HttpWebRequest, ByVal CookieString As String)
+    Public Sub SetCookieHeaders(ByRef hClient As HttpWebRequest, ByVal CookieString As String)
         Dim CookieParams() As String = CookieString.Split(";")
         hClient.CookieContainer = New CookieContainer()
         Dim addr As New Uri("https://auth.eve-online.com.cn/")
@@ -633,7 +632,7 @@ Module Module1
                 hClient.CookieContainer.Add(addr, CK)
             End If
         Next
-    End Function
+    End Sub
 
 #End Region
 
@@ -654,14 +653,14 @@ Module Module1
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function exitprog()
+    Public Sub exitprog()
         msgshown = True
-        msgbox(My.Resources.MSG_CH)
+        MsgBox(My.Resources.MSG_CH)
         If Debugger.IsAttached = True Then
-            Exit Function
+            Exit Sub
         End If
         Application.Exit()
-    End Function
+    End Sub
 
 #End Region
 

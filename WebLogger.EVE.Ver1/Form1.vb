@@ -469,9 +469,14 @@ Public Class Form1
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function DisableOrEnableObject(ByRef o As Object(), ByVal i As Boolean)
-        For Each item As Object In o
-            Me.Invoke(New FormDelegate(AddressOf changeItemStatus), i, o(item))
-        Next
+        Try
+            For Each item As Object In o
+                Me.Invoke(New FormDelegate(AddressOf changeItemStatus), i, o(item))
+            Next
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
     End Function
 
     ''' <summary>
@@ -490,6 +495,7 @@ Public Class Form1
             msgbox("打开ExeFile.exe出错，请检查程序是否放置于EVE根目录下！")
             exitprog()
             stopping = 1
+            Return False
             'pingserver()
             'Me.Close()
             'Exit Function
@@ -500,6 +506,7 @@ Public Class Form1
             不退出重新登录ToolStripMenuItem.Enabled = True
             Overtime = False
         End If
+        Return True
     End Function
 
     ''' <summary>

@@ -31,7 +31,7 @@ Public Class CaptchaDialog
         LoadCaptcha()
     End Sub
 
-    Private Function LoadCaptcha()
+    Private Sub LoadCaptcha()
         Dim imageDownloader As WebClient = New WebClient
         Dim bbyte As Byte()
         GUID = getGUID()
@@ -41,7 +41,7 @@ Public Class CaptchaDialog
         ms.Flush()
         PictureBox1.Image = Image.FromStream(ms)
         imageDownloader.Dispose()
-    End Function
+    End Sub
 
     Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
         LoadCaptcha()

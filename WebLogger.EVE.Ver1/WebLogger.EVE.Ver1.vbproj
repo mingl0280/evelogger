@@ -278,8 +278,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>$(SolutionDir)copyfile.bat $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\WindowsAPICodePack-DirectX.1.1.2\build\WindowsAPICodePack-DirectX.targets" Condition="Exists('..\packages\WindowsAPICodePack-DirectX.1.1.2\build\WindowsAPICodePack-DirectX.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
