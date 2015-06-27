@@ -160,6 +160,7 @@ Public Class Form1
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        On Error GoTo -1
         If ComboBox1.Text <> "" And ComboBox1.SelectedIndex >= 0 Then
             TextBox1.Text = decode(aAccounts(ComboBox1.SelectedIndex + 1).password_encrypted)
         End If
