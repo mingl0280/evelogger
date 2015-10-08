@@ -519,11 +519,11 @@ Public Class Form1
         Dim CMStripitem As ToolStripMenuItem = ContextMenuStrip1.Items(1)
         'Dim doitem2 As ToolStripMenuItem = CMStripitem.DropDownItems(0)
         doitem.DropDownItems.Clear()
+        CMStripitem.DropDownItems.Clear()
         ComboBox1.Items.Clear()
         For i As Integer = 1 To UBound(aAccounts)
             doitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
             ComboBox1.Items.Add(aAccounts(i).user)
-            CMStripitem.DropDownItems.Clear()
             CMStripitem.DropDownItems.Add(aAccounts(i).user, Nothing, AddressOf menuItem_Click).Name = aAccounts(i).user
         Next
     End Sub

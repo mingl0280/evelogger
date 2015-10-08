@@ -308,30 +308,10 @@ EVELoggerV2
 	<param name="HeadersArray">(可选)其它HTTP头</param>
 	<returns>返回页面的HTML代码和URI</returns>
 	<remarks></remarks>
-</member><member name="M:EVELoggerV2.Module1.GetASPNetSessionIDAndLoginAddr">
-	<summary>
- 获得Session和登录地址
- </summary>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:EVELoggerV2.Module1.SetCookieHeaders(System.Net.HttpWebRequest@,System.String)">
-	<summary>
- 设定登录Cookie
- </summary>
-	<param name="hClient"></param>
-	<param name="CookieString"></param>
-	<returns></returns>
-	<remarks></remarks>
 </member><member name="M:EVELoggerV2.Module1.msgbox(System.String,System.Object,System.Object)">
 	<summary>
  debug时不显示MessageBox
  </summary>
-	<remarks></remarks>
-</member><member name="M:EVELoggerV2.Module1.exitprog">
-	<summary>
- 退出提示的参数
- </summary>
-	<returns></returns>
 	<remarks></remarks>
 </member><member name="P:EVELoggerV2.My.Resources.Resources.ResourceManager">
 	<summary>
