@@ -1,6 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="e:\program files (x86)\microsoft visual studio 12.0\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
-<FxCopReport Version="12.0">
+<?xml-stylesheet type="text/xsl" href="e:\program files (x86)\microsoft visual studio 14.0\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="14.0">
+ <Targets>
+  <Target Name="H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\bin\Debug\EVELoggerV2.exe">
+   <Modules>
+    <Module Name="eveloggerv2.exe">
+     <Namespaces>
+      <Namespace Name="EVELoggerV2">
+       <Types>
+        <Type Name="Module1+NativeMethods" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetPrivateProfileString(System.String&amp;,System.String&amp;,System.String&amp;,System.String&amp;,System.Int32,System.String&amp;)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2016-08-30 15:27:07Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="CriticalError">更改 P/Invoke 'Module1.NativeMethods.GetPrivateProfileString(ByRef String, ByRef String, ByRef String, ByRef String, Integer, ByRef String)' 的可访问性，使它在自己的程序集外部不再是可见的。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#WritePrivateProfileString(System.String&amp;,System.String&amp;,System.String&amp;,System.String&amp;)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2016-08-30 15:27:07Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="CriticalError">更改 P/Invoke 'Module1.NativeMethods.WritePrivateProfileString(ByRef String, ByRef String, ByRef String, ByRef String)' 的可访问性，使它在自己的程序集外部不再是可见的。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401">
+   <Name>P/Invokes 应该是不可见的</Name>
+   <Description>互操作层不应该是公共的。DllImport 特性不应该应用于可公开访问的成员(公共成员或受保护的成员)。</Description>
+   <Resolution Name="Default">更改 P/Invoke {0} 的可访问性，使它在自己的程序集外部不再是可见的。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182209.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="50">CriticalError</MessageLevel>
+   <File Name="interoperabilityrules.dll" Version="14.0.0.0" />
+  </Rule>
+ </Rules>
  <Localized>
   <String Key="Category">类别</String>
   <String Key="Certainty">确定性</String>

@@ -11,3 +11,7 @@
 *WebLogger.EVE.Ver1.v11.suo
 *WebLogger.EVE.Ver1.v12.suo
 *Setup
+*.pdb
+*.rar
+packages/*
+.vs/*
