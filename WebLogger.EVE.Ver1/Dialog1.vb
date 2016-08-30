@@ -15,6 +15,7 @@ Public Class Dialog1
             ComboBox1.Items.Add(aAccounts(i).user)
         Next
         readini2("starp", star)
+        writeini("starp", star)
         If star = "C" Then
             CheckBox1.Checked = True
             TextBox2.UseSystemPasswordChar = True

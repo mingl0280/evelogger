@@ -11,8 +11,10 @@ Imports System.Xml
 Imports System.Security.Cryptography
 Imports Microsoft.VisualBasic.Devices
 Imports System.Runtime.Remoting.Messaging
-Imports Microsoft.WindowsAPICodePack.DirectX
 Imports System.Text.RegularExpressions
+Imports System.Drawing
+Imports System.ComponentModel
+Imports System.Management
 
 
 Public Class Form1
@@ -50,6 +52,8 @@ Public Class Form1
         Dim ApplicationTitle As String
         Dim valsuc As Integer
 
+        useProxy = PromoteProxy()
+
         ValidClientVersion(valsuc)                        '验证版本号
 
         不退出重新登录ToolStripMenuItem.Enabled = False
@@ -78,7 +82,8 @@ Public Class Form1
         Timer2.Start()
 
         OvalCircle1.New2(New SolidBrush(Color.Red), OvalCircle1.Width, OvalCircle1.Height)
-
+#Const A = 0
+#If A = 1 Then
         Dim g = Graphics.Factory.Create() 'this graphics stands for DX->Graphics
         For Each it In g.Adapters
             Dim r = it.Description.Description
@@ -101,6 +106,38 @@ Public Class Form1
                 End If
             End If
         Next
+#Else
+        Try
+            Dim MGO = New ManagementObjectSearcher("select * from Win32_VideoController")
+            For Each elem As ManagementObject In MGO.Get()
+                Try
+                    Dim r = elem.GetPropertyValue("Caption")
+                    If r.StartsWith("NVIDIA") Then
+                        If r.IndexOf("Titan") Then
+                            isSupportDx11 = True
+                            Exit For
+                        Else
+                            If Val(Regex.Replace(r, "[a-z]", "", RegexOptions.IgnoreCase).Trim().Replace(" ", "")) >= 400 Then
+                                isSupportDx11 = True
+                                Exit For
+                            End If
+                        End If
+                    Else
+                        If r.IndexOf("Radeon") >= 0 Then
+                            If Val(Regex.Replace(r, "[a-z]", "", RegexOptions.IgnoreCase).Trim().Replace(" ", "")) >= 5000 Then
+                                isSupportDx11 = True
+                                Exit For
+                            End If
+                        End If
+                    End If
+                Catch ex As Exception
+                End Try
+            Next
+
+        Catch ex As Exception
+
+        End Try
+#End If
         Dim OSV As New Version(My.Computer.Info.OSVersion)
         If OSV.Major < 6 Then isSupportDx11 = False
 
@@ -109,19 +146,18 @@ Public Class Form1
         Else
             Label7.Text = "DirectX 9"
         End If
+
     End Sub
 
     ''' <summary>
     ''' 终止所有线程
     ''' </summary>
-    ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub Form1_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        stopping = 1
-        pt.Abort()
-        pt2.Abort()
-        Application.Exit()
+    ''' 
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+        MyBase.OnFormClosed(e)
+        Environment.Exit(0)
     End Sub
 
     Private Sub Form1_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
@@ -249,7 +285,7 @@ Public Class Form1
         Try
             Shell("eve.exe")
         Catch ex As Exception
-            msgbox("无法打开eve.exe,请确定本程序已经放置于EVE Online根目录下!!!")
+            MsgBox("无法打开eve.exe,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
         End Try
     End Sub
@@ -258,7 +294,7 @@ Public Class Form1
         Try
             Shell("repair.exe")
         Catch ex As Exception
-            msgbox("无法打开repair.exe,请确定本程序已经放置于EVE Online根目录下!!!")
+            MsgBox("无法打开repair.exe,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
         End Try
     End Sub
@@ -277,10 +313,10 @@ Public Class Form1
         ValidClientVersion(valsuc)
         Select Case valsuc
             Case 1
-                msgbox("您使用的客户端已经是最新版！")
+                MsgBox("您使用的客户端已经是最新版！")
                 Label5.Text = "当前客户端已经是最新版！"
             Case -1
-                msgbox("验证过程出错，请稍后再试。")
+                MsgBox("验证过程出错，请稍后再试。")
                 Label5.Text = "验证过程出错，请稍后再试。"
             Case Else
                 Label5.Text = "正在更新中..."
@@ -288,7 +324,7 @@ Public Class Form1
     End Sub
 
     Private Sub 不退出重新登录ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 不退出重新登录ToolStripMenuItem.Click
-        If sso = "" Then msgbox("你还没有登录过！")
+        If sso = "" Then MsgBox("你还没有登录过！")
         StartEVE()
     End Sub
 
@@ -431,7 +467,12 @@ Public Class Form1
         Dim objlist As Object() = {Me.ComboBox1, Me.TextBox1, Me.Button1}
         'DisableOrEnableObject(objlist, False)
         Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "获取登录信息……")
-        GetASPNetSessionIDAndLoginAddr()
+tag:
+        Try
+            GetASPNetSessionIDAndLoginAddr()
+        Catch ex As Exception
+            GoTo tag
+        End Try
         Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "检查验证码……")
         If isRequestCaptcha(userinfo(0)) Then
             Dim Cresult = CaptchaDialog.ShowDialog()
@@ -442,7 +483,16 @@ Public Class Form1
             End If
         End If
         Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "验证码通过，正在登录……")
-        Dim Linfo() = TryLogin(userinfo(0), userinfo(1))
+        Dim Linfo() As String
+        While 1
+            Linfo = TryLogin(userinfo(0), userinfo(1))
+            If Linfo(0) <> "3" Then
+                Exit While
+            Else
+                Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "侦测到EULA，重置登录过程")
+                Exit Sub
+            End If
+        End While
         Dim LinfoLen = UBound(Linfo)
         Debug.WriteLine(LinfoLen)
         If Linfo(0) = "0" Then
@@ -488,11 +538,11 @@ Public Class Form1
     Private Function StartEVE(Optional ByVal ss As String = "")
         Try
             If ss = "" Then ss = sso
-            If ss = "ALREADYSTARTED" Then msgbox("您的登录已超时，请重新登录")
-            Process.Start(Application.StartupPath + "\bin\exefile.exe", "/noconsole /ssoToken=" + ss + " /triPlatform=" + If(isSupportDx11, "dx11", "dx9"))
+            If ss = "ALREADYSTARTED" Then MsgBox("您的登录已超时，请重新登录")
+            Process.Start(Application.StartupPath + "\bin\exefile.exe", "/noconsole /ssoToken=" + ss)
 
         Catch ex As Exception
-            msgbox("打开ExeFile.exe出错，请检查程序是否放置于EVE根目录下！")
+            MsgBox("打开ExeFile.exe出错，请检查程序是否放置于EVE根目录下！")
             exitprog()
             stopping = 1
             Return False

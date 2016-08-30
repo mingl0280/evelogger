@@ -10,8 +10,9 @@ Imports System.Convert
 Imports System.Globalization
 Imports System.Math
 Imports System.Runtime.InteropServices
+Imports Microsoft.Win32
 
-Module Module1
+Public Module Module1
 
 #Const T = True
 
@@ -66,10 +67,82 @@ Module Module1
     ''' 账户信息存储结构
     ''' </summary>
     ''' <remarks></remarks>
-    Structure AccountInfo
+    Public Structure AccountInfo
         Dim user As String
         Dim password_encrypted As String
     End Structure
+
+    Public Structure ProxyInfo
+        Private m_ip As String
+        Private m_user As String
+        Private m_pass As String
+        Private m_port As Integer
+        Public Property IP As String
+            Get
+                Return m_ip
+            End Get
+            Set(value As String)
+                m_ip = value
+            End Set
+        End Property
+        Public Property User As String
+            Get
+                Return m_user
+            End Get
+            Set(value As String)
+                m_user = value
+            End Set
+        End Property
+        Public Property Pass As String
+            Get
+                Return m_pass
+            End Get
+            Set(value As String)
+                m_pass = value
+            End Set
+        End Property
+
+        Public Property Port As Integer
+            Get
+                Return m_port
+            End Get
+            Set(value As Integer)
+                m_port = value
+            End Set
+        End Property
+
+        Public Sub New(u As String, p As String, i As String, pt As Integer)
+            m_user = u
+            m_pass = p
+            m_ip = i
+            m_port = pt
+        End Sub
+    End Structure
+
+    Public Class WebProxy_My
+        Implements IWebProxy
+
+        Private webProxyUri As Uri
+        Private iCredentials As ICredentials
+
+        Public Property Credentials As ICredentials Implements IWebProxy.Credentials
+            Get
+                Return iCredentials
+            End Get
+            Set(value As ICredentials)
+                iCredentials = value
+            End Set
+        End Property
+
+        Public Function GetProxy(destination As Uri) As Uri Implements IWebProxy.GetProxy
+            Return webProxyUri
+        End Function
+
+        Public Function IsBypassed(host As Uri) As Boolean Implements IWebProxy.IsBypassed
+            Return False
+        End Function
+    End Class
+
 
     Structure Headers
         Public Sub New(ByVal Header As String, ByVal Content As String)
@@ -83,6 +156,7 @@ Module Module1
     Structure htmlDocumentResponse
         Public iHTML As String
         Public uri As String
+        Public iCookies As CookieCollection
     End Structure
 
     ''' <summary>
@@ -91,6 +165,8 @@ Module Module1
     ''' <remarks></remarks>
     Public aAccounts As AccountInfo()
 
+    Public proxy As WebProxy
+    Public useProxy As Boolean = False
     Public GUID, captcha As String
     Public CookieStr, LoginAddr As String
 
@@ -122,6 +198,9 @@ Module Module1
     ''' <remarks></remarks>
     Sub ValidClientVersion(ByRef i As Integer)
         Dim dnf As WebClient = New WebClient
+        If useProxy Then
+            dnf.Proxy = proxy
+        End If
         Dim ss, sst(), sync, build As String
         Dim bbyte As Byte()
         ss = ""
@@ -138,18 +217,18 @@ Module Module1
             readini("build", build)
             dnf.Dispose()
         Catch ex As Exception
-            msgbox("网络连接错误，程序即将退出。。。")
+            MsgBox("网络连接错误，程序即将退出。。。")
             exitprog()
             i = -1
         End Try
         Try
             If sync <> sst(1) And build <> sst(0) Then
-                msgbox("你的客户端需要更新，点击""确定""启动官方启动器以完成更新。")
+                MsgBox("你的客户端需要更新，点击""确定""启动官方启动器以完成更新。")
                 Shell("eve.exe")
                 i = 2
             End If
         Catch ex As Exception
-            msgbox("无法打开eve.exe,请确定本程序已经放置于EVE Online根目录下!!!")
+            MsgBox("无法打开eve.exe,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
             i = -1
         End Try
@@ -257,6 +336,23 @@ Module Module1
         Dim DesEncryptor As New TripleDESCryptoServiceProvider
     End Function
 
+    Public Function PromoteProxy() As Boolean
+        Dim r = MessageBox.Show("是否使用代理服务器？", "代理服务器", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If r = DialogResult.Yes Then
+            Dim pd = ProxyDialog.ShowDialog()
+            If pd.BaseResult = DialogResult.OK Then
+                proxy = New WebProxy(pd.ProxyData.IP, pd.ProxyData.Port)
+                proxy.BypassProxyOnLocal = True
+                proxy.Credentials = New NetworkCredential(pd.ProxyData.User, pd.ProxyData.Pass)
+                Return True
+            Else
+                Return False
+            End If
+        Else
+            Return False
+        End If
+    End Function
+
 #End Region
 
 #Region "INI文件读取"
@@ -271,7 +367,7 @@ Module Module1
         Dim isex As Integer
         isex = IO.File.Exists("start.ini")
         If Not isex Then
-            msgbox("无法打开Start.ini,请确定本程序已经放置于EVE Online根目录下!!!")
+            MsgBox("无法打开Start.ini,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
             Return 0
         Else
@@ -296,7 +392,7 @@ Module Module1
         Dim isex As Integer
         isex = IO.File.Exists("start.ini")
         If Not isex Then
-            msgbox("无法打开Start.ini,请确定本程序已经放置于EVE Online根目录下!!!")
+            MsgBox("无法打开Start.ini,请确定本程序已经放置于EVE Online根目录下!!!")
             exitprog()
             Return 0
         Else
@@ -322,16 +418,19 @@ Module Module1
         Dim isex As Integer
         isex = IO.File.Exists("LaunchSET.ini")
         If Not isex Then
-            msgbox("无法打开LaunchSET.ini,请确定本程序已经放置于EVE Online根目录下!!!")
+            MsgBox("无法打开LaunchSET.ini,请确定本程序已经放置于EVE Online根目录下!!!")
             IO.File.Create(Application.StartupPath + "\LaunchSET.ini").Dispose()
             Return 0
         Else
-            Dim str As String
+            Dim str, tmpstr As String
             str = ""
             str = LSet(str, 32767)
+            tmpstr = ""
             Dim currentdir As String = Application.StartupPath + "\LaunchSET.ini"
             NativeMethods.GetPrivateProfileString("main", key, "", str, Len(str), currentdir)
             dststr = Left(str, InStr(str, Chr(0)) - 1)
+            WriteRegistry(key, dststr)
+            tmpstr = ReadRegistry(key)
             Return 1
         End If
     End Function
@@ -354,6 +453,44 @@ Module Module1
         Dim path As String
         path = Application.StartupPath + "\LaunchSET.ini"
         NativeMethods.WritePrivateProfileString("main", key, str, path)
+        WriteRegistry(key, str)
+    End Function
+
+    Public Function WriteRegistry(ByVal key As String, ByVal val As String) As Boolean
+        'If Content = "" Then Content = SaveFileDir
+        Try
+            Dim HK_SOFTWARE = Registry.LocalMachine.OpenSubKey("Software", True)
+
+            Dim KeyBase0 = HK_SOFTWARE.OpenSubKey("PMX", True)
+            If KeyBase0 Is Nothing Then
+                KeyBase0 = HK_SOFTWARE.CreateSubKey("PMX")
+            End If
+
+            Dim KeyBase1 = KeyBase0.OpenSubKey("EvELogger", True)
+            If KeyBase1 Is Nothing Then
+                KeyBase1 = KeyBase0.CreateSubKey("EvELogger")
+            End If
+
+            KeyBase1.SetValue(key, val.Replace("\", "\\"))
+
+            KeyBase1.Flush()
+            KeyBase0.Flush()
+            HK_SOFTWARE.Flush()
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Public Function ReadRegistry(ByVal Key As String) As String
+        Dim tval As String
+        Try
+            tval = Registry.LocalMachine.OpenSubKey("Software").OpenSubKey("PMX").OpenSubKey("EvELogger").GetValue(Key)
+        Catch ex As Exception
+            tval = ""
+        End Try
+
+        Return tval
     End Function
 
 #End Region
@@ -408,7 +545,12 @@ Module Module1
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function isRequestCaptcha(ByVal Username As String) As Boolean
+        Return False
         Dim jdownloader As WebClient = New WebClient
+        If useProxy Then
+            jdownloader.Proxy = proxy
+        End If
+
         Dim xrandnum As Random = New Random()
         Dim randString As String = ""
         Dim timeValue = DateAndTime.Now
@@ -420,7 +562,7 @@ Module Module1
         Dim ReqAddr As String = captchaURLHeader + randString + "_" + timeValueText + "&fid=100&uid=" + Username + "&_=" + timeValueText
         Dim jcontent As String = jdownloader.DownloadString(ReqAddr)
         If jcontent.IndexOf("{""R"":""0""}") > 1 Then
-            Guid = ""
+            GUID = ""
             captcha = ""
             Return False
         Else
@@ -450,7 +592,7 @@ Module Module1
     ''' <remarks></remarks>
     Public Function TryLogin(ByVal username As String, ByVal password As String) As String()
         '获取Launcher Token
-        Dim param As String = "UserName=" + username + "&Password=" + password + "&CaptchaToken=" + GUID + "&Captcha=" + captcha
+        Dim param As String = "UserName=" + username + "&Password=" + password + "&CaptchaToken=" + Guid + "&Captcha=" + captcha
         Dim hArr() As Headers = {New Headers(UserAgentHeader, UserAgentValue), New Headers("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3")}
         Dim WebResponse As htmlDocumentResponse
         Dim innerHTML As String
@@ -466,6 +608,30 @@ Module Module1
             LINFO(1) = ex.Message
             Return LINFO
         End Try
+
+        Dim tmpCkStr As String = ""
+        For i = 0 To WebResponse.iCookies.Count - 1
+            Dim t = WebResponse.iCookies(i)
+            tmpCkStr += t.Name + "=" + t.Value
+        Next
+
+        If innerHTML.IndexOf("eula") >= 0 Then
+            Dim decl_1 As String = "eulaHash"
+            Dim decl_2 As String = "returnUrl"
+            Dim st_1 As Integer = innerHTML.IndexOf(decl_1) + decl_1.Length + 39
+            Dim st_2 As Integer = innerHTML.IndexOf(decl_2) + decl_2.Length + 40
+            Dim end_1 As Integer = innerHTML.IndexOf("""", st_1)
+            Dim end_2 As Integer = innerHTML.IndexOf("""", st_2)
+            Dim QueryStringPost As String = "eulaHash=" + innerHTML.Substring(st_1, end_1 - st_1) + "&returnUrl=" + innerHTML.Substring(st_2, end_2 - st_2) + "&action=%E6%8E%A5%E5%8F%97"
+            Dim newResponse As htmlDocumentResponse
+            Dim NCKStr As String = CookieStr.Split(";")(0) + "; UserNames=" + username + "; path=/; secure; HttpOnly"
+            Dim currCk As String = CookieStr
+            CookieStr = NCKStr
+            newResponse = GetWebResponse("https://auth.eve-online.com.cn/oauth/Eula", True, True, , , QueryStringPost)
+            LINFO(0) = "3"
+            LINFO(1) = "Restart Login Process."
+            Return LINFO
+        End If
 
 
         If innerHTML.IndexOf("已登录") > 0 Then
@@ -552,6 +718,9 @@ Module Module1
                                     Optional AcceptStr As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", _
                                     Optional ByVal HeadersArray() As Headers = Nothing) As htmlDocumentResponse
         Dim webReq As HttpWebRequest = HttpWebRequest.Create(uri)
+        If useProxy Then
+            webReq.Proxy = proxy
+        End If
         SetCookieHeaders(webReq, CookieStr)
         With webReq
             .Accept = AcceptStr
@@ -587,6 +756,7 @@ Module Module1
         Dim RetValue As htmlDocumentResponse
         RetValue.uri = webResp.ResponseUri.AbsoluteUri
         RetValue.iHTML = innerHTML
+        RetValue.iCookies = webResp.Cookies
         Return RetValue
     End Function
 
@@ -596,6 +766,8 @@ Module Module1
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Sub GetASPNetSessionIDAndLoginAddr()
+        On Error GoTo Stt
+Stt:
         Dim wDownloader As WebClient = New WebClient
         wDownloader.Headers.Add(PostContentHeader, PostContentType)
         wDownloader.Headers.Add(UserAgentHeader, UserAgentHeader)
@@ -610,6 +782,7 @@ Module Module1
         Dim endp As Integer = innerHTML.IndexOf("""", startp)
         LoginAddr = "https://auth.eve-online.com.cn" + innerHTML.Substring(startp, endp - startp)
         wDownloader.Dispose()
+
     End Sub
 
     ''' <summary>
@@ -628,7 +801,7 @@ Module Module1
             Dim CK As Cookie
             If UBound(CookItem) >= 1 Then
                 If CookItem(0).IndexOf("path") >= 0 Or CookItem(0).IndexOf("secure") >= 0 Then Continue For
-                CK = New Cookie(CookItem(0).Replace(",", ""), CookItem(1).Replace(",", ""))
+                CK = New Cookie(CookItem(0).Trim().Replace(",", "%2c"), CookItem(1).Trim().Replace(",", "%2c"))
                 hClient.CookieContainer.Add(addr, CK)
             End If
         Next
@@ -651,7 +824,6 @@ Module Module1
     ''' <summary>
     ''' 退出提示的参数
     ''' </summary>
-    ''' <returns></returns>
     ''' <remarks></remarks>
     Public Sub exitprog()
         msgshown = True
@@ -659,6 +831,7 @@ Module Module1
         If Debugger.IsAttached = True Then
             Exit Sub
         End If
+
         Application.Exit()
     End Sub
 
