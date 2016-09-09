@@ -11,14 +11,14 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("EVE Online 简易登陆器 V2")> 
 <Assembly: AssemblyDescription("EVE Online 简易登陆器 V2")> 
 <Assembly: AssemblyCompany("泡面蟹")> 
-<Assembly: AssemblyProduct("EVE Online 简易登陆器 V2")> 
-<Assembly: AssemblyCopyright("Copyright © 泡面蟹 2013")> 
+<Assembly: AssemblyProduct("EVE Online 简易登陆器 V2")>
+<Assembly: AssemblyCopyright("Copyright © 泡面蟹 2016")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
 
 '如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-<Assembly: Guid("ab73a283-668b-d585-ec32-50136f94a80d")> 
+<Assembly: Guid("ab73a283-668b-d585-ec32-50136f94a80d")>
 
 ' 程序集的版本信息由下面四个值组成:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' 方法是按如下所示使用“*”:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.0.0.0")> 
-<Assembly: AssemblyFileVersion("2.0.0.0")> 
+<Assembly: AssemblyVersion("2.0.2.0")>
+<Assembly: AssemblyFileVersion("2.0.2.0")>

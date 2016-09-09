@@ -184,6 +184,7 @@ Public Module Module1
     Public Const captchaURLHeader As String = "https://captcha.tiancity.com:442/CheckSwitch.ashx?jsoncallback=jQuery"
     Public Const GUIDURL As String = "https://auth.eve-online.com.cn/Account/GenerateGuid/"
     Public Const captchaImageURL As String = "https://captcha.tiancity.com:442/getimage.ashx?tid="
+    Public Const PassCardPostBackURI As String = "https://auth.eve-online.com.cn/Account/TwoFactor?ReturnUrl=%2Foauth%2Fauthorize%3Fclient_id%3DeveLauncherSerenity%26lang%3Dzh%26response_type%3Dtoken%26redirect_uri%3Dhttps%3A%2F%2Fauth.eve-online.com.cn%2Flauncher%3Fclient_id%3DeveLauncherSerenity%26scope%3DeveClientToken%2520user"
     Public Const vFailString As String = "<div class=""validation-summary-errors"">"
     Public Const AcceptString As String = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
 
@@ -198,6 +199,7 @@ Public Module Module1
     ''' <remarks></remarks>
     Sub ValidClientVersion(ByRef i As Integer)
         Dim dnf As WebClient = New WebClient
+
         If useProxy Then
             dnf.Proxy = proxy
         End If
@@ -489,7 +491,6 @@ Public Module Module1
         Catch ex As Exception
             tval = ""
         End Try
-
         Return tval
     End Function
 
@@ -633,6 +634,29 @@ Public Module Module1
             Return LINFO
         End If
 
+        If innerHTML.IndexOf("TwoFactorAuthenticationType") > 0 Then
+            Dim firstindex As Integer = innerHTML.IndexOf("<div class=""block"">") + "<div class=""block"">".Length
+            Dim firstindexEnd As Integer = innerHTML.IndexOf("<input", firstindex)
+            Dim secondindex As Integer = innerHTML.IndexOf("<p>", firstindexEnd) + "<p>".Length
+            Dim secondindexEnd As Integer = innerHTML.IndexOf("</p>", secondindex)
+            Dim thirdIndex As Integer = innerHTML.IndexOf("<div class=""block"">", secondindexEnd) + "<div class=""block"">".Length
+            Dim thirdIndexEnd As Integer = innerHTML.IndexOf("<input", thirdIndex)
+            Dim LocStr1 As String = innerHTML.Substring(firstindex, firstindexEnd - firstindex).Trim
+            Dim LocStr2 As String = innerHTML.Substring(secondindex, secondindexEnd - secondindex).Trim
+            Dim locStr3 As String = innerHTML.Substring(thirdIndex, thirdIndexEnd - thirdIndex).Trim
+            Dim sCardForm As New SecCard(LocStr1, LocStr2, locStr3)
+            Dim sCardResult = sCardForm.ShowDialog()
+            If sCardResult = DialogResult.OK Then
+                Dim QueryString As String = "TwoFactorAuthenticationType=MatrixCard&MatrixCardOne=" + sCardForm.Value1 + "&MatrixCardTwo=" + sCardForm.Value2 + "&MatrixCardThree=" + sCardForm.Value3
+                WebResponse = GetWebResponse(PassCardPostBackURI, True, True,,, QueryString)
+                innerHTML = WebResponse.iHTML
+                respURI = WebResponse.uri
+            Else
+                LINFO(0) = "4"
+                LINFO(1) = "未正确输入密保卡信息，退出登录"
+                Return LINFO
+            End If
+        End If
 
         If innerHTML.IndexOf("已登录") > 0 Then
             Dim st, ed As Integer

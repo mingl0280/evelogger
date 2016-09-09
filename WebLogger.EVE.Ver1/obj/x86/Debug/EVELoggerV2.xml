@@ -409,8 +409,25 @@ EVELoggerV2
  <summary>
  退出提示的参数
  </summary>
- <returns></returns>
  <remarks></remarks>
+</member>
+<member name="P:EVELoggerV2.SecCard.Value1">
+ <summary>
+ PassCard Value 1
+ </summary>
+ <returns>Value box 1</returns>
+</member>
+<member name="P:EVELoggerV2.SecCard.Value2">
+ <summary>
+ PassCard Value 2
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:EVELoggerV2.SecCard.Value3">
+ <summary>
+ Passcard Value 3
+ </summary>
+ <returns></returns>
 </member>
 </members>
 </doc>

@@ -48,3 +48,4 @@ H:\VS2010\VB.NET\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Debug\EVELoggerV2
 H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Debug\WebLogger.EVE.Ver1.vbprojResolveAssemblyReference.cache
 H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Debug\EVELoggerV2.OvalCircle.resources
 H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Debug\EVELoggerV2.ProxyDialog.resources
+H:\VS2010\VB.Net\WebLogger.EVE.Ver2\WebLogger.EVE.Ver1\obj\x86\Debug\EVELoggerV2.SecCard.resources

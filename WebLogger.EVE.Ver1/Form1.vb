@@ -508,6 +508,9 @@ tag:
             StartEVE(Linfo(2))
             Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "登录成功，游戏已启动.")
             MessageBox.Show("游戏已启动！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        ElseIf Linfo(0) = "4" Then
+            MessageBox.Show(Linfo(1), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.Invoke(New voidDelegate(AddressOf UpdateUI4), "登录失败，错误.")
         End If
     End Sub
 

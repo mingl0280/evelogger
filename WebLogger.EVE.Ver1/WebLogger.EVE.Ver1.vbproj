@@ -208,6 +208,12 @@
     <Compile Include="ProxyDialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SecCard.Designer.vb">
+      <DependentUpon>SecCard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SecCard.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutBox1.resx">
@@ -233,6 +239,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProxyDialog.resx">
       <DependentUpon>ProxyDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SecCard.resx">
+      <DependentUpon>SecCard.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

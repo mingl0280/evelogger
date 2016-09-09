@@ -12,14 +12,14 @@
          <Members>
           <Member Name="#GetPrivateProfileString(System.String&amp;,System.String&amp;,System.String&amp;,System.String&amp;,System.Int32,System.String&amp;)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2016-08-30 15:27:07Z" FixCategory="Breaking">
+            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2016-09-09 03:10:57Z" FixCategory="Breaking">
              <Issue Certainty="50" Level="CriticalError">更改 P/Invoke 'Module1.NativeMethods.GetPrivateProfileString(ByRef String, ByRef String, ByRef String, ByRef String, Integer, ByRef String)' 的可访问性，使它在自己的程序集外部不再是可见的。</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#WritePrivateProfileString(System.String&amp;,System.String&amp;,System.String&amp;,System.String&amp;)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2016-08-30 15:27:07Z" FixCategory="Breaking">
+            <Message TypeName="PInvokesShouldNotBeVisible" Category="Microsoft.Interoperability" CheckId="CA1401" Status="Active" Created="2016-09-09 03:10:57Z" FixCategory="Breaking">
              <Issue Certainty="50" Level="CriticalError">更改 P/Invoke 'Module1.NativeMethods.WritePrivateProfileString(ByRef String, ByRef String, ByRef String, ByRef String)' 的可访问性，使它在自己的程序集外部不再是可见的。</Issue>
             </Message>
            </Messages>
